@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/gil/CLionProjects/Assignment1/User.cpp
+vector
+-
+string
+-
+unordered_set
+-
+unordered_map
+-
+User.h
+/home/gil/CLionProjects/Assignment1/User.h
+
+/home/gil/CLionProjects/Assignment1/User.h
+vector
+-
+string
+-
+unordered_set
+-
+unordered_map
+-
+

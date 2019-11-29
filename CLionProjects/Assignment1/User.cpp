@@ -107,9 +107,11 @@ std::vector<Watchable*>* LengthRecommenderUser::UnWatched(Session& s) {
         while (history.at(j) != nullptr & flag) {
             if (history.at(i)->getId() == i)
                 flag = false;
-        }
+                j++;
+
         if (flag)
             output->push_back(s.getContent().at(i));
+        i++;
     }
     return output;
 }

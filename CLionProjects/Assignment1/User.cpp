@@ -68,7 +68,7 @@ Watchable *LengthRecommenderUser::getRecommendation(Session &s) {
             output = diff;
             OutputI=i;
         }
-
+        i++;
     }
     return NotSeen->at(OutputI);
 }

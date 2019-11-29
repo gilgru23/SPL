@@ -75,10 +75,12 @@ Watchable *LengthRecommenderUser::getRecommendation(Session &s) {
 
 
 //Rerun Algorithm
-RerunRecommenderUser::RerunRecommenderUser(const std::string &name) : User(name) {}
+RerunRecommenderUser::RerunRecommenderUser(const std::string &name) : User(name) {RerunIndex=0;}
 
 Watchable *RerunRecommenderUser::getRecommendation(Session &s) {
-
+    Watchable* output=history.at(RerunIndex);
+    RerunIndex=(RerunIndex+1)%(history.size());
+    return output;
 }
 //
 GenreRecommenderUser::GenreRecommenderUser(const std::string &name) : User(name) {}

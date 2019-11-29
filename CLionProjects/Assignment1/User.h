@@ -50,6 +50,7 @@ public:
     RerunRecommenderUser* GetCopy(std::string& name);
     virtual Watchable* getRecommendation(Session& s);
 private:
+     int RerunIndex;
 };
 class GenreRecommenderUser : public User {
 public:

@@ -31,22 +31,32 @@ public:
     LengthRecommenderUser* GetCopy(std::string& name);
     virtual Watchable* getRecommendation(Session& s);
     LengthRecommenderUser(LengthRecommenderUser*);
+    int GetHistoAvg();
+    std::vector<Watchable*>* UnWatched(Session&);
+
+
+
+
 private:
 };
 
 class RerunRecommenderUser : public User {
 public:
     RerunRecommenderUser(const std::string& name);
-    RerunRecommenderUser(const RerunRecommenderUser &);
+    RerunRecommenderUser(const
+                         RerunRecommenderUser(const std::string &name);
+
+     RerunRecommenderUser &);
     RerunRecommenderUser* GetCopy(std::string& name);
     virtual Watchable* getRecommendation(Session& s);
 private:
 };
-
 class GenreRecommenderUser : public User {
 public:
     GenreRecommenderUser(const std::string& name);
-    GenreRecommenderUser(const GenreRecommenderUser &);
+    GenreRecommenderUser(const
+                         GenreRecommenderUser(const std::string &name);
+
     GenreRecommenderUser* GetCopy(std::string& name);
     virtual Watchable* getRecommendation(Session& s);
 private:

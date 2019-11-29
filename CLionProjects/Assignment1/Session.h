@@ -21,6 +21,10 @@ public:
     std::string& SwitchUser(std::string&);
     std::string& DeleteUser(std::string&);
     std::string& DuplicateUser(std::string&,std::string& new_name);
+    std::vector<Watchable*> getContent();
+
+
+
 
 
 private:

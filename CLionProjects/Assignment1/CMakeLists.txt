@@ -10,5 +10,5 @@ add_executable(Assignment1
         Main.cpp
         Session.h
         User.h
-        Watchable.h User.cpp Watchable.cpp Movie.cpp Episode.cpp Action.cpp Session.cpp)
+        Watchable.h Watchable.cpp Movie.cpp Episode.cpp Action.cpp Session.cpp User.cpp)
 

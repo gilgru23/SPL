@@ -57,14 +57,14 @@ void Session::readData() {
             tag++;
         }
 
-        Episode & last;
+        Episode& last;
         int season=0;
         while(j["tv_series"][inx]["seasons"][season]!=nullptr)
         {
             int s_size = j["tv_series"][inx]["seasons"][season];
             for(int k=0;k<s_size;k++)
             {
-                last =new Episode(...);
+                last =new Episode()
                idx++;
             }
             season++;
@@ -148,4 +148,6 @@ std::string& Session::DuplicateUser(std::string &original_name, std::string &new
     }
     return err;
 }
+
+
 

@@ -4,10 +4,9 @@
 #include <vector>
 #include <unordered_map>
 #include <string>
-#include "Action.h""
-
-class User;
-class Watchable;
+#include "Action.h"
+#include "User.h"
+#include "Watchable.h"
 
 class Session{
 public:
@@ -16,11 +15,11 @@ public:
     void start();
     User* GetActiveUser() const;
     void AddActionToLog(BaseAction*);
-    std::string& AddUser(std::string&, std::string&);
+    std::string AddUser(std::string&, std::string&);
     const User* FindUser(std::string&);
-    std::string& SwitchUser(std::string&);
-    std::string& DeleteUser(std::string&);
-    std::string& DuplicateUser(std::string&,std::string& new_name);
+    std::string SwitchUser(std::string&);
+    std::string DeleteUser(std::string&);
+    std::string DuplicateUser(std::string&,std::string& new_name);
     std::vector<Watchable*> getContent();
 
 

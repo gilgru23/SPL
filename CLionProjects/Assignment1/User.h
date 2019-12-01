@@ -5,6 +5,7 @@
 #include <string>
 #include <unordered_set>
 #include <unordered_map>
+#include <map>
 class Watchable;
 class Session;
 
@@ -15,7 +16,9 @@ public:
     virtual Watchable* getRecommendation(Session& s) = 0;
     std::string getName() const;
     std::vector<Watchable*> get_history() const;
+    virtual void watchContent(Watchable*);
 protected:
+    std::vector<Watchable*>* UnWatched(Session&);
     std::vector<Watchable*> history;
     virtual User* Copy(User& other);
 private:
@@ -27,12 +30,12 @@ private:
 class LengthRecommenderUser : public User {
 public:
     LengthRecommenderUser(const std::string& name);
-    LengthRecommenderUser(const LengthRecommenderUser &);
+    //LengthRecommenderUser(const LengthRecommenderUser&);
+    LengthRecommenderUser(const LengthRecommenderUser&);
     LengthRecommenderUser* GetCopy(std::string& name);
     virtual Watchable* getRecommendation(Session& s);
     LengthRecommenderUser(LengthRecommenderUser*);
     int GetHistoAvg();
-    std::vector<Watchable*>* UnWatched(Session&);
 
 
 
@@ -44,9 +47,9 @@ class RerunRecommenderUser : public User {
 public:
     RerunRecommenderUser(const std::string& name);
     RerunRecommenderUser(const
-                         RerunRecommenderUser(const std::string &name);
+                         RerunRecommenderUser(const std::string &name));
 
-     RerunRecommenderUser &);
+    // RerunRecommenderUser &);
     RerunRecommenderUser* GetCopy(std::string& name);
     virtual Watchable* getRecommendation(Session& s);
 private:
@@ -55,12 +58,15 @@ private:
 class GenreRecommenderUser : public User {
 public:
     GenreRecommenderUser(const std::string& name);
-    GenreRecommenderUser(const
-                         GenreRecommenderUser(const std::string &name);
+    GenreRecommenderUser(const GenreRecommenderUser(const std::string &name));
 
     GenreRecommenderUser* GetCopy(std::string& name);
+    void watchContent(Watchable*);
     virtual Watchable* getRecommendation(Session& s);
 private:
+    std::map<std::string,int> *tagsCount;
+
+
 };
 
 #endif

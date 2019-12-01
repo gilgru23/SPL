@@ -88,8 +88,11 @@ public:
 
 class Watch : public BaseAction {
 public:
+    Watch(long contentId);
 	virtual void act(Session& sess);
 	virtual std::string toString() const;
+private:
+    long contentId;
 };
 
 

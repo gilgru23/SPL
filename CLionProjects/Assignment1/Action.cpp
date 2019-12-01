@@ -1,9 +1,8 @@
-//
-// Created by gil on 27/11/2019.
-//
-
 #include "Action.h"
 #include "Session.h"
+#include "Watchable.h"
+#include "User.h"
+using string=std::string;
 
 void BaseAction::complete()
 {
@@ -30,7 +29,7 @@ void CreateUser::act(Session &sess) {
 }
 
 CreateUser::CreateUser(std::string & name, std::string &algo_code):
-    name(name),algo_code(algo_code){}
+        name(name),algo_code(algo_code){}
 
 void ChangeActiveUser::act(Session &sess) {
     sess.AddActionToLog(this);
@@ -46,13 +45,13 @@ void ChangeActiveUser::act(Session &sess) {
 }
 
 ChangeActiveUser::ChangeActiveUser(std::string& name):
-    name(name) {}
+        name(name) {}
 
 BaseAction::BaseAction(const std::string &errorMsg):
-    status(ActionStatus::PENDING){}
+status(ActionStatus::PENDING){}
 
 DeleteUser::DeleteUser(std::string& name):
-    name(name) {}
+        name(name) {}
 
 void DeleteUser::act(Session &sess) {
     sess.AddActionToLog(this);
@@ -64,7 +63,7 @@ void DeleteUser::act(Session &sess) {
 }
 
 DuplicateUser::DuplicateUser(std::string & oldName, std::string & newName):
-    old_name(oldName),new_name(newName){}
+        old_name(oldName),new_name(newName){}
 
 void DuplicateUser::act(Session &sess) {
     sess.AddActionToLog(this);
@@ -74,4 +73,36 @@ void DuplicateUser::act(Session &sess) {
     else
         error(err);
 }
+//Watch
+Watch::Watch(long contentId) : contentId(contentId) {}
 
+void Watch::act(Session &sess)
+{
+    sess.AddActionToLog(this);
+    Watchable *w = sess.getContent().at(contentId);
+    User*  u = sess.GetActiveUser();
+    u->watchContent(w);
+    Watchable *nextW = u->getRecommendation(sess);
+
+    string recLine="We recommend watching "+nextW->toString()+", continue watching? [y/n]";
+    std::cout<<recLine;
+
+    bool ans=false;
+    string input;
+    while(ans==false){
+        std::cin>>input;
+        if (input=="y")
+        {
+            ans=true;
+
+            Watch* watchNext = new Watch((*nextW).getId());
+            watchNext->act(sess);
+        }
+        else if(input=="n")
+        {
+            ans=true;
+        }
+        else
+            std::cout<<recLine;
+    }
+}

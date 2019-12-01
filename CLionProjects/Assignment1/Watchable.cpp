@@ -15,5 +15,9 @@ long Watchable::getId() const {
     return id;
 }
 
+const std::vector<std::string>& Watchable::getTags() {
+    return tags;
+}
+
 
 

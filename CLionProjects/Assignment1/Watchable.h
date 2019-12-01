@@ -13,6 +13,7 @@ public:
     virtual ~Watchable();
     virtual std::string toString() const = 0;
     virtual Watchable* getNextWatchable(Session&) const = 0;
+    const std::vector<std::string>& getTags();
     int getLength() const;
     long getId() const;
 private:

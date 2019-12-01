@@ -1,13 +1,12 @@
 
 #include "Session.h"
-#include <iostream>;
+#include <iostream>
 #include <fstream>
-#include "Watchable.h";
-using namespace std;
-#include "json.hpp";
+#include "Watchable.h"
+#include "json.hpp"
 #include "User.h"
+using namespace std;
 using string=std::string;
-
 using json = nlohmann::json;
 
 
@@ -56,21 +55,24 @@ void Session::readData() {
             tags.push_back(j["tv_series"][inx]["tags"][tag]);
             tag++;
         }
+        string series_name = j["tv_series"][inx]["name"];
+        int length = j["tv_series"][inx]["episode_length"];
 
-        Episode& last;
+        Episode* last;
         int season=0;
         while(j["tv_series"][inx]["seasons"][season]!=nullptr)
         {
             int s_size = j["tv_series"][inx]["seasons"][season];
-            for(int k=0;k<s_size;k++)
+            for(int e=0;e<s_size;e++)
             {
-                last =new Episode()
+                last = new Episode(idx,series_name,length,season,e,tags);
                idx++;
             }
             season++;
         }
         inx++;
-        last.SetNextEpId(-1);
+        if(last != nullptr)
+            last->SetNextEpId(-1);
     }
 }
 
@@ -78,7 +80,7 @@ void Session::AddActionToLog(BaseAction * action) {
     actionsLog.push_back(action);
 }
 
-std::string& Session::AddUser( std::string & name, std::string & algo) {
+std::string Session::AddUser( std::string & name, std::string & algo) {
     std::string err="";
     if(FindUser(name)!= nullptr)
     {
@@ -109,7 +111,7 @@ const User *Session::FindUser(std::string & name) {
     return output;
 }
 
-std::string& Session::SwitchUser(std::string & name) {
+std::string Session::SwitchUser(std::string & name) {
     std::string err="";
     User* temp= nullptr;
     try
@@ -127,14 +129,14 @@ std::string& Session::SwitchUser(std::string & name) {
     return err;
 }
 
-std::string& Session::DeleteUser(std::string & name) {
+std::string Session::DeleteUser(std::string & name) {
     std::string err="";
     if(userMap.erase(name)==0)
         err ="ERROR: The Deletion failed";
     return err;
 }
 
-std::string& Session::DuplicateUser(std::string &original_name, std::string &new_name) {
+std::string Session::DuplicateUser(std::string &original_name, std::string &new_name) {
     std::string err="";
     User* new_user= nullptr;
     try

@@ -1,4 +1,8 @@
 package bgu.spl.mics.application.messages;
 
-public class AgentsAvailableEvent {
+
+import bgu.spl.mics.Event;
+
+public class AgentsAvailableEvent implements Event<Integer> {
+
 }

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="df946d33-0057-46fd-960f-67f8d0c200c4" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="AnnotationType" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1UhdWlsOerZyxPZqgL0x77dU80y" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="bgu.spl.mics" />
+    </key>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="df946d33-0057-46fd-960f-67f8d0c200c4" name="Default Changelist" comment="" />
+      <created>1575812795293</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1575812795293</updated>
+      <workItem from="1575812799216" duration="35761000" />
+      <workItem from="1576245144504" duration="15452000" />
+      <workItem from="1576339246350" duration="2485000" />
+      <workItem from="1576412566937" duration="7000" />
+      <workItem from="1576405501800" duration="9000" />
+      <workItem from="1576425067233" duration="251000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="228" y="27" width="1200" height="873" key="#Project_Structure" timestamp="1575817017894">
+      <screen x="67" y="27" width="1533" height="873" />
+    </state>
+    <state x="228" y="27" width="1200" height="873" key="#Project_Structure/67.27.1533.873@67.27.1533.873" timestamp="1575817017894" />
+    <state x="554" y="28" width="549" height="868" key="#com.intellij.ide.util.MemberChooser" timestamp="1576277548744">
+      <screen x="67" y="27" width="1533" height="873" />
+    </state>
+    <state x="554" y="28" width="549" height="868" key="#com.intellij.ide.util.MemberChooser/67.27.1533.873@67.27.1533.873" timestamp="1576277548744" />
+    <state x="449" y="273" width="768" height="394" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1575815894795">
+      <screen x="67" y="27" width="1533" height="873" />
+    </state>
+    <state x="449" y="273" width="768" height="394" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/67.27.1533.873@67.27.1533.873" timestamp="1575815894795" />
+    <state x="441" y="97" width="774" height="730" key="#com.intellij.refactoring.typeMigration.ui.FailedConversionsDialog" timestamp="1575825184023">
+      <screen x="67" y="27" width="1533" height="873" />
+    </state>
+    <state x="441" y="97" width="774" height="730" key="#com.intellij.refactoring.typeMigration.ui.FailedConversionsDialog/67.27.1533.873@67.27.1533.873" timestamp="1575825184023" />
+    <state x="472" y="57" width="701" height="812" key="DetectedRootsChooserDialog" timestamp="1575816907897">
+      <screen x="67" y="27" width="1533" height="873" />
+    </state>
+    <state x="472" y="57" width="701" height="812" key="DetectedRootsChooserDialog/67.27.1533.873@67.27.1533.873" timestamp="1575816907897" />
+    <state x="516" y="110" width="624" height="704" key="FileChooserDialogImpl" timestamp="1575816906010">
+      <screen x="67" y="27" width="1533" height="873" />
+    </state>
+    <state x="516" y="110" width="624" height="704" key="FileChooserDialogImpl/67.27.1533.873@67.27.1533.873" timestamp="1575816906010" />
+    <state x="67" y="27" width="1506" height="873" key="SettingsEditor" timestamp="1575845171664">
+      <screen x="67" y="27" width="1533" height="873" />
+    </state>
+    <state x="67" y="27" width="1506" height="873" key="SettingsEditor/67.27.1533.873@67.27.1533.873" timestamp="1575845171664" />
+    <state width="610" height="471" key="SwitcherDM" timestamp="1575824583173">
+      <screen x="67" y="27" width="1533" height="873" />
+    </state>
+    <state width="610" height="471" key="SwitcherDM/67.27.1533.873@67.27.1533.873" timestamp="1575824583173" />
+    <state x="489" y="291" key="com.intellij.ide.util.TipDialog" timestamp="1576425068858">
+      <screen x="67" y="27" width="1533" height="873" />
+    </state>
+    <state x="489" y="291" key="com.intellij.ide.util.TipDialog/67.27.1533.873@67.27.1533.873" timestamp="1576425068858" />
+    <state x="358" y="323" width="941" height="278" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1575815134966">
+      <screen x="67" y="27" width="1533" height="873" />
+    </state>
+    <state x="358" y="323" width="941" height="278" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/67.27.1533.873@67.27.1533.873" timestamp="1575815134966" />
+    <state x="459" y="27" width="739" height="873" key="refactoring.ChangeSignatureDialog" timestamp="1575824227411">
+      <screen x="67" y="27" width="1533" height="873" />
+    </state>
+    <state x="459" y="27" width="739" height="873" key="refactoring.ChangeSignatureDialog/67.27.1533.873@67.27.1533.873" timestamp="1575824227411" />
+    <state x="329" y="200" key="run.anything.popup" timestamp="1575823294250">
+      <screen x="67" y="27" width="1533" height="873" />
+    </state>
+    <state x="329" y="200" key="run.anything.popup/67.27.1533.873@67.27.1533.873" timestamp="1575823294250" />
+    <state x="327" y="27" width="1009" height="869" key="search.everywhere.popup" timestamp="1576249934513">
+      <screen x="67" y="27" width="1533" height="873" />
+    </state>
+    <state x="327" y="27" width="1009" height="869" key="search.everywhere.popup/67.27.1533.873@67.27.1533.873" timestamp="1576249934513" />
+  </component>
+</project>

@@ -8,28 +8,24 @@ import java.util.concurrent.*;
  */
 public class MessageBrokerImpl implements MessageBroker {
 	private static MessageBrokerImpl broker;
-	private ConcurrentHashMap<Class<? extends Event<?>>, ConcurrentLinkedQueue<Subscriber>> eventSubMap;
+	private static ConcurrentHashMap<Class<? extends Event<?>>, ConcurrentLinkedQueue<Subscriber>> eventSubMap;
 	private ConcurrentHashMap<Class<? extends Broadcast>, ConcurrentSkipListSet<Subscriber>> broadcastSubMap;
 	private ConcurrentHashMap<Event,Future> eventMap;
 	private ConcurrentHashMap<Subscriber,ConcurrentLinkedQueue<Message>> subsQueueMap;
-
+	//singelton Holder constructor
 	private MessageBrokerImpl() {
 		eventSubMap = new ConcurrentHashMap<>();
 	}
 
-	/**
-	 * Retrieves the single instance of this class.
-	 */
-	public static synchronized MessageBroker getInstance() {
-		//TODO: sync new "object instance" field instead of the entire class
-		if(broker==null)
-		{
-			broker=new MessageBrokerImpl();
-		}
-		return broker;
+	private static class SingletonHolder {
+		private static MessageBrokerImpl
+				instance = new MessageBrokerImpl();
 	}
 
-
+	public static MessageBrokerImpl getInstance() {
+		return SingletonHolder.instance;
+	}
+//
 	@Override
 	public <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) {
 		ConcurrentLinkedQueue<Subscriber> q =new ConcurrentLinkedQueue<>();
@@ -163,20 +159,77 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public void register(Subscriber m) {
-		// TODO Auto-generated method stub
-
+		if(m==null)
+		{
+			//TODO:throw exception
+		}
+		subsQueueMap.putIfAbsent(m,new ConcurrentLinkedQueue<>());
 	}
 
 	@Override
 	public void unregister(Subscriber m) {
-		// TODO Auto-generated method stub
-
+		if(m==null)
+		{
+			//TODO:throw exception
+		}
+		//delete the subscriber and his message queue
+		subsQueueMap.remove(m);
+		//TODO:check if the deletion is safe
+		//delete the subscriber from the event map
+		boolean found=false;
+		for(Class<? extends Event<?>> e : eventSubMap.keySet())
+		{
+			ConcurrentLinkedQueue<Subscriber> subs = eventSubMap.get(e);
+			for(Subscriber s : subs)
+			{
+				if(s==m)//TODO:check if we can find the subscriber by refrence
+				{
+					found=true;
+					break;
+				}
+			}
+			if(found)
+				break;
+		}
+		//delete the subscriber from the broadcast map
+		found=false;
+		for(Class<? extends Broadcast> b: broadcastSubMap.keySet())
+		{
+			ConcurrentSkipListSet<Subscriber> subs = broadcastSubMap.get(b);
+			for(Subscriber s : subs)
+			{
+				if(s==m)//TODO:check if we can find the subscriber by refrence
+				{
+					found=true;
+					break;
+				}
+			}
+			if(found)
+				break;
+		}
 	}
 
 	@Override
-	public Message awaitMessage(Subscriber m) throws InterruptedException {
-		// TODO Auto-generated method stub
-		return null;
+	public  Message awaitMessage(Subscriber m) throws InterruptedException {
+		if (m == null)
+		{
+			//TODO:throw exception
+		}
+		ConcurrentLinkedQueue<Message> messages = subsQueueMap.get(m);
+		if(messages==null)
+		{
+		  //TODO::throw exception
+		}
+		Message output;
+		synchronized (messages) {
+			while (messages.isEmpty()) {
+				messages.wait(1000);
+			}
+			 output = messages.poll();
+			messages.notifyAll();
+		}
+		//TODO:check what to do if output is null
+		return output;
 	}
 	
 

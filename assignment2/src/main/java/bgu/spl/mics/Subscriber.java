@@ -1,4 +1,5 @@
 package bgu.spl.mics;
+import java.util.concurrent.*;
 
 /**
  * The Subscriber is an abstract class that any subscriber in the system
@@ -17,13 +18,16 @@ package bgu.spl.mics;
  */
 public abstract class Subscriber extends RunnableSubPub {
     private boolean terminated = false;
-
+    private MessageBroker mb;
+    private ConcurrentHashMap<Class<? extends Message>,Callback> callbackMap;
     /**
      * @param name the Subscriber name (used mainly for debugging purposes -
      *             does not have to be unique)
      */
     public Subscriber(String name) {
         super(name);
+        mb=MessageBrokerImpl.getInstance();
+        callbackMap=new ConcurrentHashMap<>();
     }
 
     /**
@@ -48,7 +52,8 @@ public abstract class Subscriber extends RunnableSubPub {
      *                 queue.
      */
     protected final <T, E extends Event<T>> void subscribeEvent(Class<E> type, Callback<E> callback) {
-        //TODO: implement this.
+        callbackMap.putIfAbsent(type,callback);
+        mb.subscribeEvent(type,this);
     }
 
     /**
@@ -72,7 +77,8 @@ public abstract class Subscriber extends RunnableSubPub {
      *                 queue.
      */
     protected final <B extends Broadcast> void subscribeBroadcast(Class<B> type, Callback<B> callback) {
-        //TODO: implement this.
+        callbackMap.putIfAbsent(type,callback);
+        mb.subscribeBroadcast(type,this);
     }
 
     /**
@@ -86,7 +92,7 @@ public abstract class Subscriber extends RunnableSubPub {
      *               {@code e}.
      */
     protected final <T> void complete(Event<T> e, T result) {
-        //TODO: implement this.
+        mb.complete(e,result);
     }
 
     /**
@@ -98,14 +104,19 @@ public abstract class Subscriber extends RunnableSubPub {
     }
 
     /**
-     * The entry point of the Subscriber. TODO: you must complete this code
-     * otherwise you will end up in an infinite loop.
+     * The entry point of the Subscriber.
      */
     @Override
     public final void run() {
         initialize();
         while (!terminated) {
-            System.out.println("NOT IMPLEMENTED!!!"); //TODO: you should delete this line :)
+            Message msg =null;
+            try {
+                msg=mb.awaitMessage(this);
+                Callback c = callbackMap.get(msg);
+                c.call(msg);
+            } catch (InterruptedException e) {
+            }
         }
     }
 

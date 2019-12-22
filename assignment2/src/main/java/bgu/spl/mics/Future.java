@@ -15,8 +15,10 @@ public class Future<T> {
 	/**
 	 * This should be the the only public constructor in this class.
 	 */
+	private T result;
+	private Object lockResult;
 	public Future() {
-		//TODO: implement this
+		lockResult=new Object();
 	}
 	
 	/**
@@ -28,23 +30,34 @@ public class Future<T> {
      * 	       
      */
 	public T get() {
-		//TODO: implement this.
-		return null;
+	   synchronized (lockResult) {
+			while (result == null) {
+				try {
+					lockResult.wait();
+				} catch (InterruptedException e) {
+
+				}
+			}
+		return result;
+		}
 	}
 	
 	/**
      * Resolves the result of this Future object.
      */
 	public void resolve (T result) {
-		//TODO: implement this.
+		synchronized (lockResult)
+		{
+			this.result=result;
+			lockResult.notifyAll();
+		}
 	}
 	
 	/**
      * @return true if this object has been resolved, false otherwise
      */
 	public boolean isDone() {
-		//TODO: implement this.
-		return false;
+		return result!=null;
 	}
 	
 	/**
@@ -54,13 +67,20 @@ public class Future<T> {
      * <p>
      * @param timeout 	the maximal amount of time units to wait for the result.
      * @param unit		the {@link TimeUnit} time units to wait.
-     * @return return the result of type T if it is available, if not, 
+     * @return return the result of type T  if it is available, if not,
      * 	       wait for {@code timeout} TimeUnits {@code unit}. If time has
      *         elapsed, return null.
      */
 	public T get(long timeout, TimeUnit unit) {
-		//TODO: implement this.
-		return null;
+		synchronized (lockResult) {
+			if (result == null) {
+				try {
+					wait(unit.toMillis(timeout));
+				} catch (InterruptedException e) {
+				}
+			}
+			return result;
+		}
 	}
 
 

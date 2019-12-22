@@ -1,5 +1,6 @@
 package bgu.spl.mics;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * The {@link MessageBrokerImpl class is the implementation of the MessageBroker interface.
@@ -8,10 +9,10 @@ import java.util.concurrent.*;
  */
 public class MessageBrokerImpl implements MessageBroker {
 	private static MessageBrokerImpl broker;
-	private static ConcurrentHashMap<Class<? extends Event<?>>, ConcurrentLinkedQueue<Subscriber>> eventSubMap;
+	private static ConcurrentHashMap<Class<? extends Event<?>>, BlockingQueue<Subscriber>> eventSubMap;
 	private ConcurrentHashMap<Class<? extends Broadcast>, ConcurrentSkipListSet<Subscriber>> broadcastSubMap;
 	private ConcurrentHashMap<Event,Future> eventMap;
-	private ConcurrentHashMap<Subscriber,ConcurrentLinkedQueue<Message>> subsQueueMap;
+	private ConcurrentHashMap<Subscriber, BlockingQueue<Message>> subsQueueMap;
 	//singelton Holder constructor
 	private MessageBrokerImpl() {
 		eventSubMap = new ConcurrentHashMap<>();
@@ -28,8 +29,8 @@ public class MessageBrokerImpl implements MessageBroker {
 //
 	@Override
 	public <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) {
-		ConcurrentLinkedQueue<Subscriber> q =new ConcurrentLinkedQueue<>();
-		ConcurrentLinkedQueue<Subscriber> temp =null;
+		BlockingQueue<Subscriber> q =new LinkedBlockingQueue<>();
+		BlockingQueue<Subscriber> temp =null;
 		try{
 			temp= eventSubMap.putIfAbsent(type,q);
 		}
@@ -91,14 +92,17 @@ public class MessageBrokerImpl implements MessageBroker {
 		if (list!=null)
 		{
 			for (Subscriber s:list) {
-				ConcurrentLinkedQueue<Message> q= subsQueueMap.get(s);
+				BlockingQueue<Message> q= subsQueueMap.get(s);
 				if(q==null)
 				{
-					//TODO: wait?
+					//TODO: throw exception: subscriber is not registered
 				}
 				else
 				{
-					q.offer(b);
+					try {
+						q.put(b);
+					} catch (InterruptedException e) {
+					}
 				}
 			}
 		}
@@ -114,47 +118,55 @@ public class MessageBrokerImpl implements MessageBroker {
 	public <T> Future<T> sendEvent(Event<T> e) {
 		Future f = new Future();
 		eventMap.put(e,f);
-		assignEvent(e);
-		return f;
+		if(assignEvent(e))
+			return f;
+		else
+			return null;
+
 	}
 
-	private <T> void assignEvent(Event<T> e) {
+	private <T> boolean assignEvent(Event<T> e) {
 		if (e==null)
 		{
 			//TODO: throw exception
 		}
-		ConcurrentLinkedQueue<Subscriber> q = eventSubMap.get(e.getClass());
-		if (q!=null)
+		BlockingQueue<Subscriber> q = eventSubMap.get(e.getClass());
+		if (!q.isEmpty())
 		{
 			//problem here is that n publishers threads might wanna
 			//pull the same subscriber from the eventSubMap on the same queue
 			//when q's size is only n-1 ;
-			synchronized(q) //TODO:find more efficient way
-			{
-				Subscriber s=q.poll();
+
+				Subscriber s= null;
+				synchronized (q) {
+					try {
+						s = q.take();
+						q.put(s);//round robin
+					} catch (InterruptedException ex) {
+					}
+				}
 				if (s!=null)
 				{
-					ConcurrentLinkedQueue<Message> suberQ = subsQueueMap.get(s);
+					BlockingQueue<Message> suberQ = subsQueueMap.get(s);
 					if (suberQ==null)
 					{
-						//TODO: see what this part has to do with awaitMessage()
+						//TODO: throw exception:the subscriber is not registered
 					}
 					else
 					{
-						suberQ.offer(e);
+						try {
+							suberQ.put(e);
+						} catch (InterruptedException ex) {
+						}
 					}
-					q.offer(s);
-				}
-				else //s==null
-				{
-					//TODO: make thread wait until a subscriber is added to the queue
+
 				}
 			}
-		}
-		else//q==null
+		else
 		{
-			//TODO: throw exception probably
+			return false;
 		}
+		return true;
 	}
 
 	@Override
@@ -163,7 +175,7 @@ public class MessageBrokerImpl implements MessageBroker {
 		{
 			//TODO:throw exception
 		}
-		subsQueueMap.putIfAbsent(m,new ConcurrentLinkedQueue<>());
+		subsQueueMap.putIfAbsent(m, new LinkedBlockingQueue<Message>());
 	}
 
 	@Override
@@ -172,41 +184,39 @@ public class MessageBrokerImpl implements MessageBroker {
 		{
 			//TODO:throw exception
 		}
-		//delete the subscriber and his message queue
-		subsQueueMap.remove(m);
-		//TODO:check if the deletion is safe
+
+
 		//delete the subscriber from the event map
 		boolean found=false;
 		for(Class<? extends Event<?>> e : eventSubMap.keySet())
 		{
-			ConcurrentLinkedQueue<Subscriber> subs = eventSubMap.get(e);
-			for(Subscriber s : subs)
+			BlockingQueue<Subscriber> subs = eventSubMap.get(e);
+			if(subs.remove(m))
 			{
-				if(s==m)//TODO:check if we can find the subscriber by refrence
-				{
-					found=true;
-					break;
-				}
-			}
-			if(found)
+				found=true;
 				break;
+			}
+		}
+
+		if(!found) {
+			//TODO:throw exception
 		}
 		//delete the subscriber from the broadcast map
 		found=false;
 		for(Class<? extends Broadcast> b: broadcastSubMap.keySet())
 		{
 			ConcurrentSkipListSet<Subscriber> subs = broadcastSubMap.get(b);
-			for(Subscriber s : subs)
+			if(subs.remove(m))
 			{
-				if(s==m)//TODO:check if we can find the subscriber by refrence
-				{
-					found=true;
-					break;
-				}
-			}
-			if(found)
+				found=true;
 				break;
-		}
+			}
+			}
+			if(!found) {
+				//TODO:throw exception
+			}
+		//delete the subscriber and his message queue
+		subsQueueMap.remove(m);
 	}
 
 	@Override
@@ -215,20 +225,11 @@ public class MessageBrokerImpl implements MessageBroker {
 		{
 			//TODO:throw exception
 		}
-		ConcurrentLinkedQueue<Message> messages = subsQueueMap.get(m);
-		if(messages==null)
-		{
-		  //TODO::throw exception
+		BlockingQueue<Message> messages = subsQueueMap.get(m);
+		if(messages==null) {
+			//TODO::throw exception
 		}
-		Message output;
-		synchronized (messages) {
-			while (messages.isEmpty()) {
-				messages.wait(1000);
-			}
-			 output = messages.poll();
-			messages.notifyAll();
-		}
-		//TODO:check what to do if output is null
+		Message output = messages.take();
 		return output;
 	}
 	

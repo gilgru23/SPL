@@ -1,6 +1,7 @@
 package bgu.spl.mics.application.passiveObjects;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.*;
 
 /**
  * Passive data-object representing a information about an agent in MI6.
@@ -10,14 +11,17 @@ import java.util.Map;
  */
 public class Squad {
 
-	private Map<String, Agent> agents;
-
+	private ConcurrentHashMap<String, Agent> agents;
+	//private ConcurrentLinkedQueue;
+	private static class SingletonHolder {
+		private static Squad
+				instance = new Squad();
+	}
 	/**
 	 * Retrieves the single instance of this class.
 	 */
 	public static Squad getInstance() {
-		//TODO: Implement this
-		return null;
+		return SingletonHolder.instance;
 	}
 
 	/**
@@ -27,7 +31,11 @@ public class Squad {
 	 * 						of the squad.
 	 */
 	public void load (Agent[] agents) {
-		// TODO Implement this
+		this.agents = new ConcurrentHashMap<>();
+		for (Agent a: agents)
+		{
+			this.agents.putIfAbsent(a.getSerialNumber(),a);
+		}d
 	}
 
 	/**

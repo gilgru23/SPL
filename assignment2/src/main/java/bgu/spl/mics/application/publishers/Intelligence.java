@@ -5,7 +5,6 @@ import bgu.spl.mics.Subscriber;
 import bgu.spl.mics.application.passiveObjects.MissionInfo;
 
 import java.util.List;
-
 /**
  * A Publisher only.
  * Holds a list of Info objects and sends them
@@ -18,12 +17,11 @@ public class Intelligence extends Publisher {
 	public Intelligence(String name,List<MissionInfo> missions) {
 		super(name);
 		this.missions=missions;
-
 	}
 
 	@Override
 	protected void initialize() {
-		// TODO Implement this
+
 	}
 
 	@Override

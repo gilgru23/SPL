@@ -8,7 +8,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Only private fields and methods can be added to this class.
  */
 public class MessageBrokerImpl implements MessageBroker {
-	private static MessageBrokerImpl broker;
 	private static ConcurrentHashMap<Class<? extends Event<?>>, BlockingQueue<Subscriber>> eventSubMap;
 	private ConcurrentHashMap<Class<? extends Broadcast>, ConcurrentSkipListSet<Subscriber>> broadcastSubMap;
 	private ConcurrentHashMap<Event,Future> eventMap;

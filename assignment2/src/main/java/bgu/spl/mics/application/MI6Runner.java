@@ -108,6 +108,7 @@ public class MI6Runner {
             agentsArray[i]= new Agent();
             agentsArray[i].setSerialNumber(o.get("serialNumber").getAsString());
             agentsArray[i].setSerialNumber(o.get("name").getAsString());
+            agentsArray[i].release();
             i++;
         }
         squad.load(agentsArray);
